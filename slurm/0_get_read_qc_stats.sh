@@ -10,7 +10,7 @@
 #SBATCH -o /data5/deepro/starrseq/main_library/2_quality_control_lib/slurm/logs/out_%a.log
 #SBATCH -e /data5/deepro/starrseq/main_library/2_quality_control_lib/slurm/logs/err_%a.log
 #SBATCH --nodelist qingyu
-#SBATCH --array 1-9
+#SBATCH --array 1-9%3
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

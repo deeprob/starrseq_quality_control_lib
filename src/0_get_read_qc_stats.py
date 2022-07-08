@@ -28,7 +28,7 @@ def main(
     raw_file_reads = ut.run_singleargs_pool_job(ut.get_num_reads_fastq, raw_data_filepaths)
     raw_data_filenames_parsed = [ut.remove_prefix_suffix(fn, library_prefix, raw_data_suff) for fn in raw_data_filenames]
     for rfn, rfr in zip(raw_data_filenames_parsed, raw_file_reads):
-        stats_file.write(f"raw_reads,{rfn},{rfr}")
+        stats_file.write(f"raw_reads,{rfn},{rfr}\n")
     # filtered data statistics
     filtered_data_suff = ut.get_analyzed_filename_suffix("filtered")
     filtered_data_filenames = ut.get_analyzed_filenames(library_prefix, library_replicates, "", filtered_data_suff)
@@ -36,12 +36,12 @@ def main(
     filtered_file_reads = ut.run_singleargs_pool_job(ut.get_num_reads_fastq, filtered_data_filepaths)
     filtered_data_filenames_parsed = [ut.remove_prefix_suffix(fn, library_prefix, filtered_data_suff) for fn in filtered_data_filenames]
     for ffn, ffr in zip(filtered_data_filenames_parsed, filtered_file_reads):
-        stats_file.write(f"filtered_reads,{ffn},{ffr}")
+        stats_file.write(f"filtered_reads,{ffn},{ffr}\n")
     # library coverage
     coverage_iter = [(freads, roi_total_bps, 150, True) for freads in filtered_file_reads]
     filtered_files_coverage = list(starmap(ut.get_coverage, coverage_iter))
     for ffn, c in zip(filtered_data_filenames_parsed, filtered_files_coverage):
-        stats_file.write(f"coverage,{ffn},{c}")
+        stats_file.write(f"coverage,{ffn},{c}\n")
     stats_file.close()
     # library depth bed creation
     depth_bed_filepaths = list(starmap(ut.get_depth_bed_filepaths, [(storage_dir, library_short, library_prefix, rep) for rep in library_replicates.split()]))
