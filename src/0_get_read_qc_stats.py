@@ -10,8 +10,7 @@ def main(
     library_replicates, 
     library_read_pairs,
     roi_file,
-    library_short,
-    debug=True
+    library_short
     ):
     # statistics_file
     stats_filepath = ut.get_statistics_filepath(storage_dir, library_short)

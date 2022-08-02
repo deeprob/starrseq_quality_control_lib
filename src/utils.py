@@ -31,7 +31,7 @@ def create_args(meta_file, lib_name):
         library_short = meta_dict[lib_name]["shortform"],
         reference_genome = meta_dict["genome"]["ref_fasta"],
         reference_genome_twobit = meta_dict["genome"]["ref_twobit"],
-        roi_file = meta_dict["roi"]["roi_sorted"]
+        roi_file = meta_dict["roi"]["sorted"]
     )
 
     return args
@@ -76,6 +76,10 @@ def get_analyzed_filepaths(dir_path, analysis, lib_short, filename):
 
 def get_depth_bed_filepaths(store_dir, lib_short, lib_prefix, lib_rep):
     return os.path.join(store_dir, "cov", lib_short, f"{lib_prefix}_{lib_rep}.bed")
+
+def get_lib_depth_beds_filepaths(store_dir, lib_short, lib_prefix, lib_reps):
+    depth_beds = [get_depth_bed_filepaths(store_dir, lib_short, lib_prefix, lib_rep) for lib_rep in lib_reps.split()]
+    return depth_beds
 
 ###########
 # Read QC #
