@@ -3,14 +3,14 @@
 #SBATCH --partition=girirajan
 #SBATCH --job-name=starr_rqc
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=6
+#SBATCH --cpus-per-task=1
 #SBATCH --time=400:0:0
-#SBATCH --mem-per-cpu=20G
+#SBATCH --mem-per-cpu=200G
 #SBATCH --chdir /data5/deepro/starrseq/main_library/2_quality_control_lib/src
-#SBATCH -o /data5/deepro/starrseq/main_library/2_quality_control_lib/slurm/logs/out_%a.log
-#SBATCH -e /data5/deepro/starrseq/main_library/2_quality_control_lib/slurm/logs/err_%a.log
+#SBATCH -o /data5/deepro/starrseq/main_library/2_quality_control_lib/slurm/logs/3_out_%a.log
+#SBATCH -e /data5/deepro/starrseq/main_library/2_quality_control_lib/slurm/logs/3_err_%a.log
 #SBATCH --nodelist qingyu
-#SBATCH --array 1-9%3
+#SBATCH --array 1-9
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -30,9 +30,9 @@ unset __conda_setup
 conda activate starrseq
 
 echo `date` starting job on $HOSTNAME
-LINE=$(sed -n "$SLURM_ARRAY_TASK_ID"p /data5/deepro/starrseq/main_library/2_quality_control_lib/slurm/data/0_smap.txt)
+LINE=$(sed -n "$SLURM_ARRAY_TASK_ID"p /data5/deepro/starrseq/main_library/2_quality_control_lib/slurm/data/3_smap.txt)
 
 echo $LINE
-python /data5/deepro/starrseq/main_library/2_quality_control_lib/src/0_get_read_qc_stats.py $LINE
+python /data5/deepro/starrseq/main_library/2_quality_control_lib/src/3_get_window_depth.py $LINE
 
 echo `date` ending job

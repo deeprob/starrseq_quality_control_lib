@@ -31,7 +31,8 @@ def create_args(meta_file, lib_name):
         library_short = meta_dict[lib_name]["shortform"],
         reference_genome = meta_dict["genome"]["ref_fasta"],
         reference_genome_twobit = meta_dict["genome"]["ref_twobit"],
-        roi_file = meta_dict["roi"]["sorted"]
+        roi_file = meta_dict["roi"]["sorted"],
+        roi_window_file = meta_dict["roi"]["window"],
     )
 
     return args
@@ -113,6 +114,27 @@ def get_roi_depth(filtered_bam, roi_sorted_bed, bed_out):
     c.moveto(bed_out)
     return
 
+##################
+# create windows #
+##################
+
+def make_windows(in_bed, out_bed, window_size=500, window_stride=50):
+    """
+    Break the ROIs into fragments of an user defined window size and stride
+    """
+    window = pybedtools.BedTool().window_maker(b=in_bed ,w=window_size, s=window_stride)
+    window_df = window.to_dataframe()
+    # get rid of windows which have the same end point
+    last_end = None
+    rows_to_omit = []
+    for i, row in enumerate(window_df.itertuples()):
+        if row.end == last_end:
+            rows_to_omit.append(i)
+        last_end = row.end
+    window_df = window_df.loc[~window_df.index.isin(rows_to_omit)]
+    os.makedirs(os.path.dirname(out_bed), exist_ok=True)
+    window_df.to_csv(out_bed, sep="\t", header=None, index=None)
+    return
 
 ################
 # multiprocess #
