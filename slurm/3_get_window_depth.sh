@@ -3,7 +3,7 @@
 #SBATCH --partition=girirajan
 #SBATCH --job-name=starr_rqc
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=6
 #SBATCH --time=400:0:0
 #SBATCH --mem-per-cpu=200G
 #SBATCH --chdir /data5/deepro/starrseq/main_library/2_quality_control_lib/src

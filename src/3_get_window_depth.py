@@ -13,12 +13,15 @@ def main(
     lib_short,
     ):
     # get the bam file
-    filtered_bam_file = os.path.join(input_data_dir, "filtered", lib_short, f"{lib_prefix}.bam")
+    replicate_bam_files = [os.path.join(input_data_dir, "filtered", lib_short, f"{lib_prefix}_{lib_rep}.bam") for lib_rep in lib_replicates]
+    merged_bam_file = os.path.join(input_data_dir, "filtered", lib_short, f"{lib_prefix}.bam")
     # depth out file
-    store_file = os.path.join(store_dir, "window_depth", lib_short, f"{lib_prefix}.bed")
-    os.makedirs(os.path.dirname(store_file), exist_ok=True)
+    replicate_depth_files = [os.path.join(store_dir, "window_depth", lib_short, f"{lib_prefix}_{lib_rep}.bed") for lib_rep in lib_replicates]
+    merged_depth_file = os.path.join(store_dir, "window_depth", lib_short, f"{lib_prefix}.bed")
+    os.makedirs(os.path.dirname(merged_depth_file), exist_ok=True)
     # create windows
-    ut.get_roi_depth(filtered_bam_file, window_file, store_file)
+    pool_iter = [(bf, window_file, sf) for bf,sf in zip(replicate_bam_files+[merged_bam_file], replicate_depth_files + [merged_depth_file])]
+    ut.run_multiargs_pool_job(ut.get_roi_depth, pool_iter)
     return
 
 
