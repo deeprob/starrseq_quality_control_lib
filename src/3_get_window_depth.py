@@ -13,10 +13,10 @@ def main(
     lib_short,
     ):
     # get the bam file
-    replicate_bam_files = [os.path.join(input_data_dir, "filtered", lib_short, f"{lib_prefix}_{lib_rep}.bam") for lib_rep in lib_replicates]
+    replicate_bam_files = [os.path.join(input_data_dir, "filtered", lib_short, f"{lib_prefix}_{lib_rep}.bam") for lib_rep in lib_replicates.split()]
     merged_bam_file = os.path.join(input_data_dir, "filtered", lib_short, f"{lib_prefix}.bam")
     # depth out file
-    replicate_depth_files = [os.path.join(store_dir, "window_depth", lib_short, f"{lib_prefix}_{lib_rep}.bed") for lib_rep in lib_replicates]
+    replicate_depth_files = [os.path.join(store_dir, "window_depth", lib_short, f"{lib_prefix}_{lib_rep}.bed") for lib_rep in lib_replicates.split()]
     merged_depth_file = os.path.join(store_dir, "window_depth", lib_short, f"{lib_prefix}.bed")
     os.makedirs(os.path.dirname(merged_depth_file), exist_ok=True)
     # create windows
